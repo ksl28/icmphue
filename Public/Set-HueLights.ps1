@@ -46,6 +46,10 @@ function Set-HueLights {
         $monitorTarget
     )
 
+    Write-Output "Starting to  monitor $monitorTarget for online/offline status..."
+    Write-Output "RoomName: $roomName -  HueBridge: $hueBridge"
+
+
     $roomObj = get-HueRoom -roomName $roomName -hueBridge $hueBridge -hueAPIKey $hueAPIKey
     $roomLights = get-HueRoomLights -roomObj $roomObj -hueAPIKey $hueAPIKey -hueBridge $hueBridge
 
