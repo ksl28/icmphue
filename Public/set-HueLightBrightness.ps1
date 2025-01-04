@@ -28,5 +28,11 @@ function set-HueLightBrightness {
         }
     } | ConvertTo-Json -Depth 3
     
-    Invoke-RestMethod -Method PUT -Uri "https://$hueBridge/clip/v2/resource/light/$lightID" -Body $body -Headers $Header -ContentType "application/json" -SkipCertificateCheck  | Out-Null
+    try {
+        Invoke-RestMethod -Method PUT -Uri "https://$hueBridge/clip/v2/resource/light/$lightID" -Body $body -Headers $Header -ContentType "application/json" -SkipCertificateCheck  -ErrorAction stop | Out-Null    
+    }
+    catch {
+        throw "Failed to set the brightness for the light with id $lightID - error: $($_.Exception.Message)"
+    }
+    
 }

@@ -16,10 +16,17 @@ function get-HueRoomLights {
     $Header = @{
         'hue-application-key' = $hueAPIKey
     }
-    $allLights = Invoke-RestMethod -Method GET -Uri "https://$hueBridge/clip/v2/resource/light" -Headers $Header -ContentType "application/json" -SkipCertificateCheck
-
+    try {
+        $allLights = Invoke-RestMethod -Method GET -Uri "https://$hueBridge/clip/v2/resource/light" -Headers $Header -ContentType "application/json" -SkipCertificateCheck -ErrorAction stop    
+    }
+    catch {
+        throw "Failed to call the API to get a list of lights - error: $($_.Exception.Message)"
+    }
+   
     $roomObjRids = $roomObj.children.rid
     $matchingLights = $allLights.data | Where-Object { $_.owner.rid -in $roomObjRids } | ForEach-Object { $_.id }
-   
-    return $matchingLights
+
+    if ($matchingLights) {
+        return $matchingLights
+    }
 }

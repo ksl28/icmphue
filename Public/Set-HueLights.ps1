@@ -1,6 +1,5 @@
 function Set-HueLights {
     param (
-        # Parameter help description
         [Parameter(Mandatory = $true)]
         [string]
         $roomName,
